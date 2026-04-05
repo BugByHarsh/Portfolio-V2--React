@@ -58,7 +58,7 @@ export default function Services() {
   return (
     <section
       id="services"
-      className={`w-full scroll-mt-22 mb-10 md:mb-16 px-10 transition-colors duration-300 ${isCosmos ? "text-white bg-black/70" : "text-gray-900"
+      className={`w-full scroll-mt-22 lg:px-10 px-4 transition-colors duration-300 ${isCosmos ? "text-white bg-black/70" : "text-gray-900"
         }`}
     >
       <div className="flex items-end justify-between mb-10">
@@ -69,9 +69,7 @@ export default function Services() {
           Fast. Clean. Reliable.
         </p>
       </div>
-      <div className="max-w-7xl mx-auto md:px-5">
-
-        {/* TITLE */}
+      <div className="max-w-7xl mx-auto px-1 md:px-5">
 
         <div className="grid lg:grid-cols-2 gap-16 items-start">
 
@@ -140,7 +138,7 @@ export default function Services() {
           </div>
 
           {/* RIGHT SIDE */}
-          <div className="flex flex-col gap-10">
+          <div className="flex flex-col px-2 gap-10">
 
             <div>
               <h3 className={`text-lg font-semibold mb-3 ${isCosmos ? "text-white" : "text-gray-900"

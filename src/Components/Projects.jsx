@@ -1,13 +1,26 @@
 import { useTheme } from "../context/ThemeContext";
 import { Github, ExternalLink } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TiltedCard from "./bg/Tiltcard";
 
 export default function Projects() {
     const { theme } = useTheme();
     const isCosmos = theme === "cosmos";
+    const [height, setHeight] = useState()
 
     const [showTooltip, setShowTooltip] = useState(false);
+    useEffect(() => {
+        const handleResize = () => {
+            const height = window.innerWidth < 768 ? "220px" : "280px";
+            setHeight(height);
+        };
+
+        handleResize(); // run once on mount
+
+        window.addEventListener("resize", handleResize);
+
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     const handleCodeClick = () => {
         setShowTooltip(true);
@@ -81,7 +94,7 @@ export default function Projects() {
     return (
         <section
             id="projects"
-            className={`w-full py-10 px-6 md:px-10 scroll-mt-14 transition-colors duration-300 ${isCosmos ? "bg-black/70 text-white" : "bg-white text-gray-900"
+            className={`w-full pt-6 md:px-10 px-5 scroll-mt-18 transition-colors duration-300 ${isCosmos ? "bg-black/70 text-white" : "bg-white text-gray-900"
                 }`}
         >
             <div className="flex items-end justify-between">
@@ -96,8 +109,7 @@ export default function Projects() {
                     Things I’ve built.
                 </p>
             </div>
-            <div className="max-w-7xl mx-auto px-5">
-
+            <div className="max-w-7xl mx-auto md:px-5 px-2">
 
                 {/* Alternating rows */}
                 <div className="flex flex-col">
@@ -112,12 +124,12 @@ export default function Projects() {
                                     }`}>
 
                                     {/* Image */}
-                                    <div className={`w-full md:w-2/5 rounded-xl relative"
+                                    <div className={`w-full mb-3 md:w-2/5 rounded-xl relative"
                                         }`}>
                                         <TiltedCard imageSrc={project.image}
                                             altText={project.title}
-                                            containerHeight="288px"
-                                            imageHeight="288px"
+                                            containerHeight={height}
+                                            imageHeight={height}
                                             imageWidth="100%"
                                             rotateAmplitude={12}
                                             scaleOnHover={1.05}
@@ -129,13 +141,6 @@ export default function Projects() {
                                         {project.featured && (
                                             <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold backdrop-blur-sm bg-black/50 border border-yellow-400/40 text-yellow-400">
                                                 ★ Featured
-                                            </div>
-                                        )}
-
-                                        {/* TG Bot badge */}
-                                        {project.badge && (
-                                            <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md text-xs font-semibold bg-green-500/20 border border-green-400/30 text-green-400 backdrop-blur-sm">
-                                                {project.badge}
                                             </div>
                                         )}
                                     </div>

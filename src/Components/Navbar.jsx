@@ -69,14 +69,13 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 w-full z-50 transition-all duration-500">
       {/* Main Bar */}
       <div
-        className={`border-b transition-all duration-500 ${
+        className={`border-y transition-all duration-500 ${
           isMinimal
-            ? "bg-white border-gray-200 shadow-sm"
-            : "bg-black/30 backdrop-blur-xl border-white/10 shadow-[0_8px_32px_0_rgba(31,38,135,0.2)]"
+            ? "bg-white/30 backdrop-blur-xl border-gray-500 shadow-sm"
+            : "bg-black/30 backdrop-blur-xl border-white/50 shadow-[0_8px_32px_0_rgba(31,38,135,0.2)]"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-8 py-5 flex justify-between items-center">
-
+        <div className="max-w-7xl mx-auto px-8 py-4 flex justify-between items-center">
           {/* Logo */}
           <div className="flex items-center gap-3">
             <div
@@ -185,7 +184,7 @@ export default function Navbar() {
           menuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
         } ${
           isMinimal
-            ? "bg-white border-b border-gray-200"
+            ? "bg-white/50 backdrop-blur-xl border-y border-gray-700"
             : "bg-black/80 backdrop-blur-xl border-b border-white/10"
         }`}
       >
@@ -194,10 +193,10 @@ export default function Navbar() {
             <button
               key={item}
               onClick={() => scrollToSection(item)}
-              className={`capitalize text-left py-3 px-2 text-sm font-medium rounded-lg transition-all duration-200 border-b last:border-b-0 ${
+              className={`capitalize text-left py-3 px-2 text-sm font-medium ztransition-all duration-200 border-b last:border-b-0 ${
                 isMinimal
-                  ? "border-gray-100 text-gray-700 hover:bg-gray-50 hover:text-black"
-                  : "border-white/5 text-white/80 hover:bg-white/5 hover:text-violet-400"
+                  ? "border-gray-700 text-gray-700 hover:bg-gray-50 hover:text-black"
+                  : "border-white/90 text-white/80 hover:bg-white/5 hover:text-violet-400"
               } ${
                 active === item
                   ? isMinimal
@@ -209,7 +208,7 @@ export default function Navbar() {
               {active === item && (
                 <span
                   className={`inline-block w-1.5 h-1.5 rounded-full mr-2 mb-0.5 ${
-                    isMinimal ? "bg-black" : "bg-violet-400"
+                    isMinimal ? "bg-black": "bg-violet-400"
                   }`}
                 />
               )}

@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState("cosmos");
+  const [theme, setTheme] = useState("minimal");
 
   // Optional: persist theme in localStorage
   useEffect(() => {

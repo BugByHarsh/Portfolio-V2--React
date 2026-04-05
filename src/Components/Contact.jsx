@@ -68,13 +68,13 @@ export default function Contact() {
     <>
       <section
         id="contact"
-        className={`w-full py-24 px-6 md:px-10 transition-colors duration-300 ${isCosmos ? "bg-black/70 text-white" : " text-gray-900"
+        className={`w-full scroll-mt-20 px-4 md:px-10 transition-colors duration-300 ${isCosmos ? "bg-black/70 text-white" : " text-gray-900"
           }`}
       >
-        <div className="max-w-6xl mx-auto">
+        <div className="mx-auto">
 
           {/* Header */}
-          <div className="flex items-end justify-between mb-12">
+          <div className="flex items-end justify-between mb-8 md:mb-12">
             <h2
               className={`text-lg font-semibold tracking-widest ${isCosmos ? "text-purple-400" : "text-gray-400"
                 }`}
@@ -90,7 +90,7 @@ export default function Contact() {
           </div>
 
           {/* Grid */}
-          <div className="grid md:grid-cols-2 gap-12 px-5 mx-5 bg-white/1 py-10 rounded-2xl">
+          <div className="grid md:grid-cols-2 gap-12 px-4 bg-white/1 py-10 rounded-2xl">
 
             {/* Left — Contact Info */}
             <div className="flex flex-col gap-6">
@@ -112,7 +112,7 @@ export default function Contact() {
                 <a href="https://github.com/BugByHarsh" target="_blank" className={linkBase}>
                   <Github size={16} /> GitHub
                 </a>
-                <a href="https://linkedin.com/in/upadhyay-harsh9756" target="_blank" className={linkBase}>
+                <a href="https://linkedin.com/in/heyharshu" target="_blank" className={linkBase}>
                   <Linkedin size={16} /> LinkedIn
                 </a>
               </div>

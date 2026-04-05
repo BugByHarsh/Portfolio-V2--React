@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, memo } from 'react';
 
 const ANIMATION_CONFIG = {
   SMOOTH_TAU: 0.25,
-  MIN_COPIES: 2,
+  MIN_COPIES: 4,
   COPY_HEADROOM: 2
 };
 
@@ -162,10 +162,24 @@ export const LogoLoop = memo(
     const trackRef = useRef(null);
     const seqRef = useRef(null);
 
+    const [containerWidth, setContainerWidth] = useState(0);
     const [seqWidth, setSeqWidth] = useState(0);
     const [seqHeight, setSeqHeight] = useState(0);
     const [copyCount, setCopyCount] = useState(ANIMATION_CONFIG.MIN_COPIES);
     const [isHovered, setIsHovered] = useState(false);
+
+    // Calculate responsive gap and height for mobile
+    const responsiveGap = useMemo(() => {
+      if (containerWidth < 480) return Math.max(8, gap * 0.5);
+      if (containerWidth < 768) return Math.max(16, gap * 0.75);
+      return gap;
+    }, [containerWidth, gap]);
+
+    const responsiveLogoHeight = useMemo(() => {
+      if (containerWidth < 480) return Math.max(20, logoHeight * 0.8);
+      if (containerWidth < 768) return Math.max(24, logoHeight * 0.9);
+      return logoHeight;
+    }, [containerWidth, logoHeight]);
 
     const effectiveHoverSpeed = useMemo(() => {
       if (hoverSpeed !== undefined) return hoverSpeed;
@@ -189,10 +203,13 @@ export const LogoLoop = memo(
     }, [speed, direction, isVertical]);
 
     const updateDimensions = useCallback(() => {
-      const containerWidth = containerRef.current?.clientWidth ?? 0;
+      const cWidth = containerRef.current?.clientWidth ?? 0;
+      setContainerWidth(cWidth);
+
       const sequenceRect = seqRef.current?.getBoundingClientRect?.();
       const sequenceWidth = sequenceRect?.width ?? 0;
       const sequenceHeight = sequenceRect?.height ?? 0;
+
       if (isVertical) {
         const parentHeight = containerRef.current?.parentElement?.clientHeight ?? 0;
         if (containerRef.current && parentHeight > 0) {
@@ -206,26 +223,33 @@ export const LogoLoop = memo(
           const copiesNeeded = Math.ceil(viewport / sequenceHeight) + ANIMATION_CONFIG.COPY_HEADROOM;
           setCopyCount(Math.max(ANIMATION_CONFIG.MIN_COPIES, copiesNeeded));
         }
-      } else if (sequenceWidth > 0) {
+      } else if (sequenceWidth > 0 && cWidth > 0) {
         setSeqWidth(Math.ceil(sequenceWidth));
-        const copiesNeeded = Math.ceil(containerWidth / sequenceWidth) + ANIMATION_CONFIG.COPY_HEADROOM;
-        setCopyCount(Math.max(ANIMATION_CONFIG.MIN_COPIES, copiesNeeded));
+        // Ensure enough copies to prevent overlapping and gaps
+        // The key is that sequence width must be calculated with responsive gap and height
+        const copiesNeeded = Math.ceil(cWidth / sequenceWidth) + ANIMATION_CONFIG.COPY_HEADROOM;
+        const finalCopyCount = Math.max(ANIMATION_CONFIG.MIN_COPIES, copiesNeeded);
+        setCopyCount(finalCopyCount);
       }
     }, [isVertical]);
 
-    useResizeObserver(updateDimensions, [containerRef, seqRef], [logos, gap, logoHeight, isVertical]);
+    useResizeObserver(
+      updateDimensions,
+      [containerRef, seqRef],
+      [logos, responsiveGap, responsiveLogoHeight, isVertical]
+    );
 
-    useImageLoader(seqRef, updateDimensions, [logos, gap, logoHeight, isVertical]);
+    useImageLoader(seqRef, updateDimensions, [logos, responsiveGap, responsiveLogoHeight, isVertical]);
 
     useAnimationLoop(trackRef, targetVelocity, seqWidth, seqHeight, isHovered, effectiveHoverSpeed, isVertical);
 
     const cssVariables = useMemo(
       () => ({
-        '--logoloop-gap': `${gap}px`,
-        '--logoloop-logoHeight': `${logoHeight}px`,
+        '--logoloop-gap': `${responsiveGap}px`,
+        '--logoloop-logoHeight': `${responsiveLogoHeight}px`,
         ...(fadeOutColor && { '--logoloop-fadeColor': fadeOutColor })
       }),
-      [gap, logoHeight, fadeOutColor]
+      [responsiveGap, responsiveLogoHeight, fadeOutColor]
     );
 
     const rootClasses = useMemo(
@@ -246,6 +270,7 @@ export const LogoLoop = memo(
     const handleMouseEnter = useCallback(() => {
       if (effectiveHoverSpeed !== undefined) setIsHovered(true);
     }, [effectiveHoverSpeed]);
+
     const handleMouseLeave = useCallback(() => {
       if (effectiveHoverSpeed !== undefined) setIsHovered(false);
     }, [effectiveHoverSpeed]);
