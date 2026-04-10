@@ -34,7 +34,7 @@ export default function Projects() {
             tech: ["React", "Web3", "Node.js", "MongoDB", "Wagmi"],
             image: "/projects/social.png",
             github: null,
-            live: "https://ezzstar.com",
+            live: "https://ezzstar.space",
             featured: true,
         },
         {
@@ -45,15 +45,15 @@ export default function Projects() {
             github: "https://github.com/BugByHarsh/Tasks-app--React-Native",
             live: "https://tasks-app-react-native.vercel.app/",
         },
-        {
-            title: "Ezzstar Presale",
-            desc: "The platform for participating in the SPCA token presale, allowing users to securely buy SPCA coins, track allocations, and engage with the token ecosystem before public launch.",
-            tech: ["React", "Web3", "Wagmi", "Ethers.js"],
-            image: "/projects/presale.png",
-            github: null,
-            live: "https://ezzstar.space",
-            featured: true,
-        },
+        // {
+        //     title: "Ezzstar Presale",
+        //     desc: "The platform for participating in the SPCA token presale, allowing users to securely buy SPCA coins, track allocations, and engage with the token ecosystem before public launch.",
+        //     tech: ["React", "Web3", "Wagmi", "Ethers.js"],
+        //     image: "/projects/presale.png",
+        //     github: null,
+        //     live: "https://ezzstar.space",
+        //     featured: true,
+        // },
         {
             title: "CSS Arena",
             desc: "A real-time competitive platform where developers battle using pure CSS—featuring live rendering, instant scoring, multiplayer rooms, and daily design challenges to test creativity and precision.",
