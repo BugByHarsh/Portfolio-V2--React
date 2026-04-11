@@ -118,9 +118,9 @@ const RESPONSES = {
   contact: () => (
     <div className="space-y-0.5">
       <p className="text-green-500 font-medium">✓ connection established</p>
-      <p className="text-zinc-500">Email: your-email@example.com</p>
-      <p className="text-zinc-500">GitHub: github.com/yourprofile</p>
-      <p className="text-zinc-500">LinkedIn: linkedin.com/in/yourprofile</p>
+      <p className="text-zinc-500">Email: harsh9756416665@example.com</p>
+      <p className="text-zinc-500">GitHub: github.com/BugByHarsh</p>
+      <p className="text-zinc-500">LinkedIn: linkedin.com/in/heyharshu</p>
     </div>
   ),
   resume: () => <ResumeDownload />,
@@ -347,10 +347,10 @@ function TerminalCard({ isCosmos }) {
       onFocus={() => { setFocused(true); focusedRef.current = true }}
       onBlur={() => { setFocused(false); focusedRef.current = false }}
       onClick={() => { if (terminalRef.current) terminalRef.current.focus() }}
-      className={`rounded-2xl mx-10 overflow-hidden border shadow-sm cursor-text outline-none ${isCosmos ? "border-purple-500/30 bg-black/50" : "border-zinc-200 bg-white"}`}
+      className={`rounded-2xl mx-10 overflow-hidden border shadow-sm cursor-text outline-none ${isCosmos ? "bg-black" : "border-zinc-200 bg-white"}`}
     >
       {/* Chrome */}
-      <div className={`flex items-center gap-1.5 px-5 py-3.5 border-b select-none ${isCosmos ? "bg-black/30 border-purple-500/20" : "bg-zinc-50 border-zinc-200"}`}>
+      <div className={`flex items-center gap-1.5 px-5 py-3.5 border-b select-none ${isCosmos ? "bg-black/30 " : "bg-zinc-50 border-zinc-200"}`}>
         <span className="w-3 h-3 rounded-full bg-red-400/80" />
         <span className="w-3 h-3 rounded-full bg-yellow-400/80" />
         <span className="w-3 h-3 rounded-full bg-green-400/80" />
@@ -406,7 +406,7 @@ const About = () => {
   return (
     <section
       id="about"
-      className={`w-full py-16 scroll-mt-18 md:px-10 px-4 transition-colors duration-500 ${isCosmos ? "bg-black/70 text-white" : "bg-white text-gray-900"
+      className={`w-full scroll-mt-18 md:px-10 px-4 transition-colors duration-500 ${isCosmos ? "bg-black/70 text-white" : "bg-white text-gray-900"
         }`}
     >
       {/* Title */}
