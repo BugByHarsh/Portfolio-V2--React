@@ -68,7 +68,7 @@ export default function Projects() {
             tech: ["React", "Node.js", "Tailwind"],
             image: "/projects/weblum.png",
             github: "https://github.com/BugByHarsh/weblum",
-            live: "https://weblum.vercel.app/",
+            live: "https://weblum.in",
         },
         {
             title: "Convo",
