@@ -249,7 +249,14 @@ export default function Hero() {
                     0%   { transform: translateY(0);   opacity: 1; }
                     100% { transform: translateY(6px); opacity: 0; }
                 }
-                @keyframes skillFloat {\n                    0%, 100% { transform: translate3d(0, 0, 0); }\n                    50% { transform: translate3d(0, -9px, 0); }\n                }\n                @media (prefers-reduced-motion: reduce) {\n                    [style*="skillFloat"] { animation: none !important; }\n                }\n                @keyframes revolve {
+                @keyframes skillFloat {
+                    0%, 100% { transform: translate3d(0, 0, 0); }
+                    50% { transform: translate3d(0, -9px, 0); }
+                }
+                @media (prefers-reduced-motion: reduce) {
+                    [style*="skillFloat"] { animation: none !important; }
+                }
+                @keyframes revolve {
                     from { transform: rotate(0deg); }
                     to   { transform: rotate(360deg); }
                 }
