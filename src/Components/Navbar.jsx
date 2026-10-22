@@ -118,7 +118,7 @@ export default function Navbar() {
       <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-5 sm:pt-4">
         <nav
           aria-label="Main navigation"
-          className={`relative mx-auto max-w-6xl rounded-2xl backdrop-blur-2xl transition-all duration-300 sm:rounded-full ${shell} ${scrolled ? "py-0" : ""}`}
+          className={`relative mx-auto max-w-6xl transition-all duration-300 ${scrolled ? `rounded-2xl backdrop-blur-2xl sm:rounded-full ${shell}` : `rounded-none border border-transparent bg-transparent shadow-none backdrop-blur-none ${isMinimal ? "text-stone-800" : "text-white"}`} ${scrolled ? "py-0" : ""}`}
         >
           <div className="flex min-h-[62px] items-center justify-between gap-3 px-3 sm:px-5">
             <button
