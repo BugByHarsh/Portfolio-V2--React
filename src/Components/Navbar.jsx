@@ -1,239 +1,219 @@
+import { useEffect, useState } from "react";
 import { useTheme } from "../context/ThemeContext";
-import { useEffect, useState, useRef } from "react";
+
+const navItems = [
+  { id: "home", label: "Home" },
+  { id: "about", label: "About" },
+  { id: "services", label: "Services" },
+  { id: "projects", label: "Projects" },
+  { id: "contact", label: "Contact" },
+];
+
+function ThemeIcon({ minimal }) {
+  return minimal ? (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="h-4 w-4">
+      <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1.6" />
+      <path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  ) : (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="h-4 w-4">
+      <path d="M20.2 15.2A8.6 8.6 0 0 1 8.8 3.8 8.7 8.7 0 1 0 20.2 15.2Z" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="m16.5 3 .5 1.5 1.5.5-1.5.5-.5 1.5-.5-1.5-1.5-.5 1.5-.5.5-1.5Z" fill="currentColor" />
+    </svg>
+  );
+}
+
+function MenuIcon({ open }) {
+  return (
+    <span className="relative block h-5 w-5" aria-hidden="true">
+      <span className={`absolute left-0 top-1 block h-px w-5 bg-current transition-transform duration-300 ${open ? "translate-y-[5px] rotate-45" : ""}`} />
+      <span className={`absolute left-0 top-[10px] block h-px w-5 bg-current transition-all duration-300 ${open ? "scale-x-0 opacity-0" : ""}`} />
+      <span className={`absolute left-0 top-4 block h-px w-5 bg-current transition-transform duration-300 ${open ? "-translate-y-[5px] -rotate-45" : ""}`} />
+    </span>
+  );
+}
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
   const isMinimal = theme === "minimal";
-
-  const navItems = ["home", "about", "services", "projects", "contact"];
-
   const [active, setActive] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
-  const [fontsReady, setFontsReady] = useState(false);
-
-  const containerRef = useRef(null);
-  const indicatorRef = useRef(null);
-
-  // Wait for fonts before positioning indicator
-  useEffect(() => {
-    document.fonts.ready.then(() => setFontsReady(true));
-  }, []);
+  const [scrolled, setScrolled] = useState(false);
 
   const scrollToSection = (id) => {
     const section = document.getElementById(id);
     if (section) {
       section.scrollIntoView({ behavior: "smooth", block: "start" });
     }
+    setActive(id);
     setMenuOpen(false);
   };
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + 200;
-      navItems.forEach((section) => {
-        const element = document.getElementById(section);
-        if (element) {
-          const offsetTop = element.offsetTop;
-          const height = element.offsetHeight;
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + height) {
-            setActive(section);
-          }
-        }
+    let ticking = false;
+
+    const updateNavigation = () => {
+      setScrolled(window.scrollY > 16);
+
+      const marker = window.scrollY + window.innerHeight * 0.32;
+      let current = "home";
+
+      navItems.forEach(({ id }) => {
+        const section = document.getElementById(id);
+        if (section && section.offsetTop <= marker) current = id;
       });
+
+      setActive(current);
+      ticking = false;
     };
-    window.addEventListener("scroll", handleScroll);
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateNavigation);
+        ticking = true;
+      }
+    };
+
+    updateNavigation();
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Reposition indicator whenever active changes or fonts become ready
   useEffect(() => {
-    if (!fontsReady) return;
-    const activeElement = document.getElementById(`nav-${active}`);
-    if (activeElement && indicatorRef.current && containerRef.current) {
-      const { offsetLeft, offsetWidth } = activeElement;
-      indicatorRef.current.style.width = `${offsetWidth}px`;
-      indicatorRef.current.style.transform = `translateX(${offsetLeft}px)`;
-    }
-  }, [active, fontsReady]);
-
-  // Close mobile menu on resize to desktop
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 768) setMenuOpen(false);
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") setMenuOpen(false);
     };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
+  const shell = isMinimal
+    ? "border border-stone-200/90 bg-[#fbfaf8]/90 text-stone-800 shadow-[0_12px_40px_rgba(28,25,23,0.08)]"
+    : "border border-white/[0.12] bg-[#0b0913]/80 text-white shadow-[0_12px_44px_rgba(0,0,0,0.25),0_0_32px_rgba(139,92,246,0.07)]";
+  const accent = isMinimal ? "text-violet-700" : "text-violet-300";
+  const activeLink = isMinimal
+    ? "bg-stone-900/[0.06] text-stone-950"
+    : "bg-violet-400/[0.12] text-violet-200";
+  const mutedLink = isMinimal
+    ? "text-stone-500 hover:bg-stone-900/[0.04] hover:text-stone-900"
+    : "text-white/60 hover:bg-white/[0.06] hover:text-white";
+
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 transition-all duration-500">
-      {/* Main Bar */}
-      <div
-        className={`border-y transition-all duration-500 ${
-          isMinimal
-            ? "bg-white/30 backdrop-blur-xl border-gray-500 shadow-sm"
-            : "bg-black/30 backdrop-blur-xl border-white/50 shadow-[0_8px_32px_0_rgba(31,38,135,0.2)]"
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-8 py-4 flex justify-between items-center">
-          {/* Logo */}
-          <div className="flex items-center gap-3">
-            <div
-              className={`font-semibold rounded-sm py-1 px-2 text-sm ${
-                isMinimal ? "bg-black text-white" : "bg-violet-400 text-black"
-              }`}
+    <>
+      <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-5 sm:pt-4">
+        <nav
+          aria-label="Main navigation"
+          className={`relative mx-auto max-w-6xl rounded-2xl backdrop-blur-2xl transition-all duration-300 sm:rounded-full ${shell} ${scrolled ? "py-0" : ""}`}
+        >
+          <div className="flex min-h-[62px] items-center justify-between gap-3 px-3 sm:px-5">
+            <button
+              type="button"
+              onClick={() => scrollToSection("home")}
+              aria-label="Harsh Upadhyay — home"
+              className="group flex min-w-0 items-center gap-2.5 rounded-full text-left outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-4"
             >
-              HU
+              <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-xs font-bold tracking-tight transition-transform duration-300 group-hover:rotate-[-5deg] group-hover:scale-105 ${isMinimal ? "bg-stone-900 text-white" : "bg-violet-300 text-[#100b1b] shadow-[0_0_22px_rgba(167,139,250,0.22)]"}`}>
+                HU<span className="text-[8px]">.</span>
+              </span>
+              <span className="min-w-0">
+                <span className="block truncate text-sm font-semibold tracking-[-0.035em] sm:text-[15px]">Harsh Upadhyay</span>
+                <span className={`hidden text-[10px] tracking-[0.12em] sm:block ${isMinimal ? "text-stone-500" : "text-white/45"}`}>DEVELOPER & BUILDER</span>
+              </span>
+            </button>
+
+            <div className="hidden items-center gap-1 md:flex">
+              {navItems.map(({ id, label }) => (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => scrollToSection(id)}
+                  aria-current={active === id ? "location" : undefined}
+                  className={`relative rounded-full px-3 py-2 text-[12px] font-medium transition-all duration-200 lg:px-3.5 lg:text-[13px] ${active === id ? activeLink : mutedLink}`}
+                >
+                  {label}
+                  {active === id && (
+                    <span className={`absolute bottom-[4px] left-1/2 h-1 w-1 -translate-x-1/2 rounded-full ${isMinimal ? "bg-violet-600" : "bg-violet-300"}`} />
+                  )}
+                </button>
+              ))}
             </div>
-            <h1
-              className={`font-semibold text-xl tracking-wide ${
-                isMinimal ? "text-black" : "text-violet-400"
-              }`}
-            >
-              Harsh Upadhyay
-            </h1>
-          </div>
 
-          {/* Desktop Nav Links */}
-          <div
-            ref={containerRef}
-            className={`relative hidden md:flex items-center gap-10 text-sm font-medium ${
-              isMinimal ? "text-gray-700" : "text-white"
-            }`}
-          >
-            {/* Sliding Indicator */}
-            <span
-              ref={indicatorRef}
-              className={`absolute bottom-0 h-[2px] transition-all duration-300 ${
-                fontsReady ? "opacity-100" : "opacity-0"
-              } ${isMinimal ? "bg-black" : "bg-violet-400"}`}
-            />
-
-            {navItems.map((item) => (
+            <div className="flex shrink-0 items-center gap-2">
               <button
-                id={`nav-${item}`}
-                key={item}
-                onClick={() => scrollToSection(item)}
-                className={`capitalize relative py-1 transition duration-300 ${
-                  active === item
-                    ? isMinimal ? "text-black" : "text-violet-400"
-                    : isMinimal ? "hover:text-black" : "hover:text-violet-400"
-                }`}
+                type="button"
+                onClick={toggleTheme}
+                aria-label={`Switch to ${isMinimal ? "Cosmic" : "Minimal"} theme`}
+                title={`Switch to ${isMinimal ? "Cosmic" : "Minimal"} theme`}
+                className={`flex h-10 items-center gap-2 rounded-full border px-3 text-xs font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 ${isMinimal ? "border-stone-200 bg-white/80 text-stone-700 hover:border-violet-300 hover:text-violet-700" : "border-white/10 bg-white/[0.05] text-white/80 hover:border-violet-300/40 hover:bg-violet-400/10 hover:text-violet-200"}`}
               >
-                {item}
+                <ThemeIcon minimal={isMinimal} />
+                <span className="hidden sm:inline">{isMinimal ? "Minimal" : "Cosmic"}</span>
               </button>
-            ))}
-          </div>
 
-          {/* Right side: Theme Toggle + Hamburger */}
-          <div className="flex items-center gap-3 text-gray-400 text-xs">
-            {/* Theme Toggle — shows current theme as a dot indicator */}
-            <p className="md:block hidden">
-            theme : 
-            </p>
-            <button
-              onClick={toggleTheme}
-              className={`hidden md:flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 ${
-                isMinimal
-                ? "bg-black text-white hover:bg-gray-800"
-                : "bg-white/10 backdrop-blur-md text-white border border-violet-200 hover:bg-white/20"
-              }`}
+              <button
+                type="button"
+                onClick={() => setMenuOpen((open) => !open)}
+                aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+                aria-expanded={menuOpen}
+                aria-controls="mobile-navigation"
+                className={`flex h-10 w-10 items-center justify-center rounded-full transition-colors md:hidden ${isMinimal ? "hover:bg-stone-900/[0.06]" : "hover:bg-white/[0.07]"}`}
               >
-              {/* Active theme dot */}
-              <span
-                className={`w-2 h-2 rounded-full ${
-                  isMinimal ? "bg-white" : "bg-violet-400"
-                }`}
-              />
-              {isMinimal ? "Minimal" : "Cosmos"}
-            </button>
-
-            {/* Hamburger — mobile only */}
-            <button
-              onClick={() => setMenuOpen((prev) => !prev)}
-              className={`md:hidden flex flex-col justify-center items-center w-9 h-9 gap-[5px] rounded-md transition-all duration-300 ${
-                isMinimal
-                  ? "hover:bg-gray-100"
-                  : "hover:bg-white/10"
-              }`}
-              aria-label="Toggle menu"
-            >
-              <span
-                className={`block w-5 h-[1.5px] transition-all duration-300 origin-center ${
-                  isMinimal ? "bg-black" : "bg-white"
-                } ${menuOpen ? "rotate-45 translate-y-[6.5px]" : ""}`}
-              />
-              <span
-                className={`block w-5 h-[1.5px] transition-all duration-300 ${
-                  isMinimal ? "bg-black" : "bg-white"
-                } ${menuOpen ? "opacity-0 scale-x-0" : ""}`}
-              />
-              <span
-                className={`block w-5 h-[1.5px] transition-all duration-300 origin-center ${
-                  isMinimal ? "bg-black" : "bg-white"
-                } ${menuOpen ? "-rotate-45 -translate-y-[6.5px]" : ""}`}
-              />
-            </button>
+                <MenuIcon open={menuOpen} />
+              </button>
+            </div>
           </div>
-        </div>
-      </div>
 
-      {/* Mobile Menu Dropdown */}
-      <div
-        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-          menuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-        } ${
-          isMinimal
-            ? "bg-white/50 backdrop-blur-xl border-y border-gray-700"
-            : "bg-black/80 backdrop-blur-xl border-b border-white/10"
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-8 py-4 flex flex-col gap-1">
-          {navItems.map((item) => (
-            <button
-              key={item}
-              onClick={() => scrollToSection(item)}
-              className={`capitalize text-left py-3 px-2 text-sm font-medium ztransition-all duration-200 border-b last:border-b-0 ${
-                isMinimal
-                  ? "border-gray-700 text-gray-700 hover:bg-gray-50 hover:text-black"
-                  : "border-white/90 text-white/80 hover:bg-white/5 hover:text-violet-400"
-              } ${
-                active === item
-                  ? isMinimal
-                    ? "text-black font-semibold"
-                    : "text-violet-400 font-semibold"
-                  : ""
-              }`}
-            >
-              {active === item && (
-                <span
-                  className={`inline-block w-1.5 h-1.5 rounded-full mr-2 mb-0.5 ${
-                    isMinimal ? "bg-black": "bg-violet-400"
-                  }`}
-                />
-              )}
-             {item}
-            </button>
-          ))}
-
-          {/* Theme toggle inside mobile menu */}
-          <button
-            onClick={toggleTheme}
-            className={`mt-3 w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
-              isMinimal
-                ? "bg-black text-white hover:bg-gray-800"
-                : "bg-white/10 text-white border border-violet-300/30 hover:bg-white/20"
-            }`}
+          <div
+            id="mobile-navigation"
+            className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out md:hidden ${menuOpen ? "grid-rows-[1fr] opacity-100" : "pointer-events-none grid-rows-[0fr] opacity-0"}`}
+            aria-hidden={!menuOpen}
           >
-            <span
-              className={`w-2 h-2 rounded-full ${
-                isMinimal ? "bg-white" : "bg-violet-400"
-              }`}
-            />
-            Switch to {isMinimal ? "Cosmos" : "Minimal"}
-          </button>
-        </div>
-      </div>
-    </nav>
+            <div className="overflow-hidden">
+              <div className={`mx-3 mb-3 rounded-xl border p-2 ${isMinimal ? "border-stone-200 bg-white/70" : "border-white/[0.08] bg-black/20"}`}>
+                {navItems.map(({ id, label }, index) => (
+                  <button
+                    key={id}
+                    type="button"
+                    tabIndex={menuOpen ? 0 : -1}
+                    onClick={() => scrollToSection(id)}
+                    aria-current={active === id ? "location" : undefined}
+                    className={`flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left text-sm transition-colors ${active === id ? activeLink : mutedLink}`}
+                  >
+                    <span className={`w-5 font-mono text-[10px] ${accent}`}>{String(index + 1).padStart(2, "0")}</span>
+                    <span className="flex-1">{label}</span>
+                    {active === id && <span className={`h-1.5 w-1.5 rounded-full ${isMinimal ? "bg-violet-600" : "bg-violet-300"}`} />}
+                  </button>
+                ))}
+                <div className={`mx-3 my-1 border-t ${isMinimal ? "border-stone-200" : "border-white/10"}`} />
+                <button
+                  type="button"
+                  tabIndex={menuOpen ? 0 : -1}
+                  onClick={() => scrollToSection("contact")}
+                  className={`mt-1 flex w-full items-center justify-center gap-2 rounded-lg px-3 py-3 text-sm font-semibold transition-colors ${isMinimal ? "bg-stone-900 text-white hover:bg-violet-700" : "bg-violet-300 text-[#100b1b] hover:bg-violet-200"}`}
+                >
+                  Let's talk <span aria-hidden="true">↗</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      {menuOpen && (
+        <button
+          type="button"
+          aria-label="Close navigation menu overlay"
+          onClick={() => setMenuOpen(false)}
+          className="fixed inset-0 z-40 cursor-default bg-black/20 backdrop-blur-[2px] md:hidden"
+        />
+      )}
+    </>
   );
 }
