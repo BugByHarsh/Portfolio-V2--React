@@ -1,5 +1,4 @@
 import { useTheme } from "../context/ThemeContext";
-import ElectricBorder from "./bg/Electric";
 import { Github, Linkedin } from "lucide-react";
 import LogoLoop from "./bg/LogoLoop";
 
