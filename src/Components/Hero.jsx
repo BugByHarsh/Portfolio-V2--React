@@ -1,24 +1,10 @@
 import { useTheme } from "../context/ThemeContext";
 import { Github, Linkedin } from "lucide-react";
-import LogoLoop from "./bg/LogoLoop";
+import { Atom, Server, Database, AppWindow } from "lucide-react";
 
 export default function Hero() {
     const { theme } = useTheme();
     const isMinimal = theme === "minimal";
-
-    const logos = [
-        { src: "/logos/javascript.svg", alt: "JavaScript" },
-        { src: "/logos/php.svg", alt: "PHP" },
-        { src: "/logos/python.svg", alt: "Python" },
-        { src: "/logos/react.svg", alt: "React" },
-        { src: "/logos/tailwindcss.svg", alt: "Tailwind CSS" },
-        { src: "/logos/nodedotjs.svg", alt: "Node.js" },
-        { src: "/logos/express.svg", alt: "Express.js" },
-        { src: "/logos/laravel.svg", alt: "Laravel" },
-        { src: "/logos/mongodb.svg", alt: "MongoDB" },
-        { src: "/logos/mysql.svg", alt: "MySQL" },
-        { src: "/logos/git.svg", alt: "Git" },
-    ];
 
     const scrollDown = () => {
         const about = document.getElementById("about");
@@ -56,16 +42,17 @@ export default function Hero() {
                                     <div className={`mt-3 border-t pt-2 font-mono text-[9px] tracking-[0.12em] ${isMinimal ? "border-stone-200 text-stone-400" : "border-white/10 text-slate-500"}`}>DESIGN · CODE · BUILD</div>
                                 </div>
                             </div>
-                            <div className="mt-2 grid grid-cols-3 gap-1.5">
+                            <div className="mt-4 grid grid-cols-2 gap-2">
                                 {[
-                                    { name: "CSS Arena", num: "01" },
-                                    { name: "Ezzstar", num: "02" },
-                                    { name: "Weblum", num: "03" },
-                                ].map((project) => (
-                                    <a key={project.name} href="#projects" className={`rounded-lg border px-2 py-2 text-left transition-transform duration-300 hover:-translate-y-1 ${isMinimal ? "border-stone-200 bg-white/90" : "border-white/10 bg-white/[0.04]"}`}>
-                                        <span className={`block font-mono text-[8px] ${isMinimal ? "text-violet-700" : "text-violet-300"}`}>{project.num} / PROJECT</span>
-                                        <span className={`mt-1 block truncate text-[10px] font-medium ${isMinimal ? "text-stone-800" : "text-white"}`}>{project.name}</span>
-                                    </a>
+                                    { name: "React", type: "Frontend", Icon: Atom, tone: "text-sky-500", delay: "0s" },
+                                    { name: "Node.js", type: "Backend", Icon: Server, tone: "text-emerald-500", delay: "-1.5s" },
+                                    { name: "MongoDB", type: "Database", Icon: Database, tone: "text-violet-500", delay: "-3s" },
+                                    { name: "Electron", type: "Desktop apps", Icon: AppWindow, tone: "text-amber-500", delay: "-4.5s" },
+                                ].map(({ name, type, Icon, tone, delay }) => (
+                                    <div key={name} style={{ animation: "skillFloat 6s ease-in-out infinite", animationDelay: delay }} className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 shadow-lg ${isMinimal ? "border-stone-200 bg-white/95 shadow-stone-900/5" : "border-white/10 bg-[#111522]/95 shadow-black/20"}`}>
+                                        <Icon size={17} className={tone} />
+                                        <span className={`text-xs font-medium ${isMinimal ? "text-stone-800" : "text-white"}`}>{name}</span>
+                                    </div>
                                 ))}
                             </div>
                         </div>
@@ -190,22 +177,21 @@ export default function Hero() {
                                 </div>
                             </div>
                         </div>
-                        {/* Project cards */}
-                        <a href="#projects" className={`absolute left-[-4px] top-[95px] z-20 w-[156px] rounded-2xl border p-3 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] ${isMinimal ? "border-stone-200 bg-white/95 text-stone-800 shadow-stone-900/10" : "border-white/10 bg-[#111522]/95 text-white shadow-black/30"}`}>
-                            <span className={`block font-mono text-[9px] tracking-[0.12em] ${isMinimal ? "text-stone-400" : "text-slate-500"}`}>01 / PROJECT</span>
-                            <span className="mt-1 block text-sm font-semibold">CSS Arena</span>
-                            <span className={`mt-1 block text-[10px] ${isMinimal ? "text-stone-500" : "text-slate-400"}`}>Explore project ↗</span>
-                        </a>
-                        <a href="#projects" className={`absolute right-[-2px] top-[265px] z-20 w-[145px] rounded-2xl border p-3 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] ${isMinimal ? "border-stone-200 bg-white/95 text-stone-800 shadow-stone-900/10" : "border-white/10 bg-[#111522]/95 text-white shadow-black/30"}`}>
-                            <span className={`block font-mono text-[9px] tracking-[0.12em] ${isMinimal ? "text-stone-400" : "text-slate-500"}`}>02 / PROJECT</span>
-                            <span className="mt-1 block text-sm font-semibold">Ezzstar</span>
-                            <span className={`mt-1 block text-[10px] ${isMinimal ? "text-stone-500" : "text-slate-400"}`}>Explore project ↗</span>
-                        </a>
-                        <a href="#projects" className={`absolute bottom-[1px] right-[20px] z-20 w-[165px] rounded-2xl border p-3 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] ${isMinimal ? "border-violet-200 bg-white/95 text-stone-800 shadow-stone-900/10" : "border-violet-300/20 bg-[#211a32]/95 text-white shadow-violet-950/30"}`}>
-                            <span className={`block font-mono text-[9px] tracking-[0.12em] ${isMinimal ? "text-violet-700" : "text-violet-300"}`}>03 / FEATURED</span>
-                            <span className="mt-1 block text-sm font-semibold">Weblum <span aria-hidden="true">↗</span></span>
-                            <span className={`mt-1 block text-[10px] ${isMinimal ? "text-stone-500" : "text-violet-100/60"}`}>Digital products</span>
-                        </a>
+                        {/* Floating skill cards */}
+                        {[
+                            { name: "React", type: "Frontend", Icon: Atom, tone: "text-sky-500", pos: "left-[-4px] top-[88px]", delay: "0s" },
+                            { name: "Node.js", type: "Backend", Icon: Server, tone: "text-emerald-500", pos: "right-[-2px] top-[190px]", delay: "-1.5s" },
+                            { name: "MongoDB", type: "Database", Icon: Database, tone: "text-violet-500", pos: "left-[0px] bottom-[72px]", delay: "-3s" },
+                            { name: "Electron", type: "Desktop apps", Icon: AppWindow, tone: "text-amber-500", pos: "right-[12px] bottom-[10px]", delay: "-4.5s" },
+                        ].map(({ name, type, Icon, tone, pos, delay }) => (
+                            <div key={name} style={{ animation: "skillFloat 6s ease-in-out infinite", animationDelay: delay }} className={`absolute ${pos} z-20 flex items-center gap-2.5 rounded-xl border px-3 py-2.5 shadow-xl backdrop-blur-xl ${isMinimal ? "border-stone-200 bg-white/95 text-stone-800 shadow-stone-900/10" : "border-white/10 bg-[#111522]/95 text-white shadow-black/30"}`}>
+                                <Icon size={19} className={tone} />
+                                <span>
+                                    <span className="block text-xs font-semibold">{name}</span>
+                                    <span className={`mt-0.5 block text-[9px] ${isMinimal ? "text-stone-500" : "text-slate-400"}`}>{type}</span>
+                                </span>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
@@ -228,25 +214,14 @@ export default function Hero() {
                 </div>
             </button>
 
-            {/* Logo strip */}
-            <div className={`absolute bottom-0 py-3 sm:py-4 border-t left-0 w-full ${isMinimal
-                ? "bg-black/5 border-black/10"
-                : "bg-white/5 border-white/10"
-                }`}>
-                <LogoLoop
-                    logos={logos}
-                    logoHeight={24}
-                    gap={24}
-                    className={isMinimal ? "[&_img]:brightness-0" : "[&_img]:invert"}
-                />
-            </div>
+
 
             <style>{`
                 @keyframes scrollWheel {
                     0%   { transform: translateY(0);   opacity: 1; }
                     100% { transform: translateY(6px); opacity: 0; }
                 }
-                @keyframes revolve {
+                @keyframes skillFloat {\n                    0%, 100% { transform: translate3d(0, 0, 0); }\n                    50% { transform: translate3d(0, -9px, 0); }\n                }\n                @media (prefers-reduced-motion: reduce) {\n                    [style*="skillFloat"] { animation: none !important; }\n                }\n                @keyframes revolve {
                     from { transform: rotate(0deg); }
                     to   { transform: rotate(360deg); }
                 }
