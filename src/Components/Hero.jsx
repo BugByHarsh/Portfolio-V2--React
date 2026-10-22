@@ -37,23 +37,37 @@ export default function Hero() {
             justify-around lg:justify-center gap-6 sm:gap-8 md:gap-20">
                 {/* Left Content */}
                 <div className="max-w-xl space-y-4 sm:space-y-5 md:space-y-6">
-                    {/* Mobile avatar — shown only on small screens */}
-                    <div className="flex lg:hidden justify-center mb-6 ">
-                        <div className="relative">
-                            <div className="absolute inset-0 rounded-full"
-                                style={{ animation: "revolve 20s linear infinite", margin: "-10px" }}>
-                                <div className={`absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 sm:w-4 h-3 sm:h-4 rounded-full ${isMinimal?"bg-black":"bg-white"}`} />
+                    {/* Mobile profile card — keeps the current hero order */}
+                    <div className="flex lg:hidden justify-center mb-6">
+                        <div className="relative w-full max-w-[300px] pt-3">
+                            <div className={`absolute -top-1 right-1 text-[9px] font-mono tracking-[0.16em] ${isMinimal ? "text-emerald-700" : "text-teal-300"}`}>
+                                <span className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full bg-teal-400" /> AVAILABLE
                             </div>
-                            <div className="absolute inset-0 rounded-full"
-                                style={{ animation: "revolve 20s linear infinite", animationDelay: "-10s", margin: "-10px" }}>
-                                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 sm:w-4 h-3 sm:h-4 rounded-full bg-neutral-500" />
+                            <div className={`relative overflow-hidden rounded-[1.35rem] border p-1.5 shadow-2xl ${isMinimal ? "border-stone-300 bg-white/90 shadow-stone-900/10" : "border-white/15 bg-[#111522]/95 shadow-violet-950/40"}`}>
+                                <div className={`flex items-center justify-between px-2 py-2 font-mono text-[9px] tracking-[0.16em] ${isMinimal ? "text-stone-400" : "text-slate-500"}`}>
+                                    <span>PROFILE / 001</span><span>01 — 03</span>
+                                </div>
+                                <div className="relative overflow-hidden rounded-[1rem]">
+                                    <img src="image.webp" alt="Harsh Upadhyay" className="aspect-[4/4.3] w-full object-cover object-top transition-transform duration-700 hover:scale-[1.03]" />
+                                    <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/45 to-transparent" />
+                                </div>
+                                <div className="px-3 pb-3 pt-3 text-left">
+                                    <p className={`text-[10px] font-semibold tracking-[0.13em] ${isMinimal ? "text-violet-700" : "text-teal-300"}`}>FULL-STACK DEVELOPER</p>
+                                    <p className={`mt-1 text-lg font-medium tracking-tight ${isMinimal ? "text-stone-900" : "text-white"}`}>Harsh Upadhyay <span className={`${isMinimal ? "text-violet-700" : "text-violet-300"}`}>↗</span></p>
+                                    <div className={`mt-3 border-t pt-2 font-mono text-[9px] tracking-[0.12em] ${isMinimal ? "border-stone-200 text-stone-400" : "border-white/10 text-slate-500"}`}>DESIGN · CODE · BUILD</div>
+                                </div>
                             </div>
-                            <div className={`relative w-40 sm:w-48 md:w-56 h-40 sm:h-48 md:h-56 rounded-full overflow-hidden border ${isMinimal?"border-black":"border-white"}shadow-lg sm:shadow-xl`}>
-                                <img
-                                    src="image.webp"
-                                    alt="Harsh Upadhyay"
-                                    className="h-full w-full object-cover object-top transition-all hover:scale-105 duration-700"
-                                />
+                            <div className="mt-2 grid grid-cols-3 gap-1.5">
+                                {[
+                                    { name: "CSS Arena", num: "01" },
+                                    { name: "Ezzstar", num: "02" },
+                                    { name: "Weblum", num: "03" },
+                                ].map((project) => (
+                                    <a key={project.name} href="#projects" className={`rounded-lg border px-2 py-2 text-left transition-transform duration-300 hover:-translate-y-1 ${isMinimal ? "border-stone-200 bg-white/90" : "border-white/10 bg-white/[0.04]"}`}>
+                                        <span className={`block font-mono text-[8px] ${isMinimal ? "text-violet-700" : "text-violet-300"}`}>{project.num} / PROJECT</span>
+                                        <span className={`mt-1 block truncate text-[10px] font-medium ${isMinimal ? "text-stone-800" : "text-white"}`}>{project.name}</span>
+                                    </a>
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -153,43 +167,47 @@ export default function Hero() {
                     </div>
                 </div>
 
-                {/* Right Image — desktop only */}
-                <div className="hidden lg:flex justify-center flex-shrink-0">
-                    {isMinimal ? (
-                        <div className="relative float-image">
-                            <div
-                                className="absolute inset-0 rounded-full"
-                                style={{ animation: "revolve 20s linear infinite", margin: "-10px" }}
-                            >
-                                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-black" />
+                {/* Right profile card with floating project cards — desktop only */}
+                <div className="hidden lg:flex flex-shrink-0 justify-center">
+                    <div className="relative w-[440px] xl:w-[500px] py-8">
+                        {/* Orbit lines */}
+                        <div className={`pointer-events-none absolute left-1/2 top-1/2 h-[390px] w-[390px] -translate-x-1/2 -translate-y-1/2 rounded-full border ${isMinimal ? "border-stone-300/70" : "border-slate-500/25"}`} />
+                        <div className={`pointer-events-none absolute left-1/2 top-1/2 h-[330px] w-[470px] -translate-x-1/2 -translate-y-1/2 rotate-[-24deg] rounded-[50%] border ${isMinimal ? "border-violet-200/80" : "border-violet-300/15"}`} />
+                        {/* Profile card */}
+                        <div className={`relative z-10 mx-auto w-[300px] xl:w-[320px] rotate-[0.5deg] overflow-hidden rounded-[1.6rem] border p-2 shadow-2xl transition-transform duration-500 hover:rotate-0 ${isMinimal ? "border-stone-300 bg-[#fbfaf8]/95 shadow-stone-900/15" : "border-white/15 bg-[#111522]/95 shadow-black/50"}`}>
+                            <div className={`flex items-center justify-between px-2 py-2 font-mono text-[9px] tracking-[0.16em] ${isMinimal ? "text-stone-400" : "text-slate-500"}`}>
+                                <span>PROFILE / 001</span>
+                                <span className={`tracking-normal ${isMinimal ? "text-emerald-700" : "text-teal-300"}`}>● AVAILABLE</span>
                             </div>
-                            <div
-                                className="absolute inset-0 rounded-full"
-                                style={{ animation: "revolve 20s linear infinite", animationDelay: "-10s", margin: "-10px" }}
-                            >
-                                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-neutral-500" />
+                            <div className="relative overflow-hidden rounded-[1.15rem]">
+                                <img src="image.webp" alt="Harsh Upadhyay" className="aspect-[4/4.35] w-full object-cover object-top transition-transform duration-700 hover:scale-[1.035]" />
+                                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/45 to-transparent" />
                             </div>
-                            <div className="relative w-64 h-64 lg:w-80 lg:h-80 rounded-full overflow-hidden border-4 border-black shadow-xl">
-                                <img
-                                    src="image.webp"
-                                    alt="Harsh Upadhyay"
-                                    className="h-full w-full object-cover object-top transition-all hover:scale-105 duration-700"
-                                />
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="transition-all duration-700 ease-in-out opacity-100 scale-100">
-                            <ElectricBorder>
-                                <div className="relative w-64 h-64 lg:w-80 lg:h-80 rounded-xl overflow-hidden border-2 border-violet-400 shadow-[0_0_60px_rgba(139,92,246,0.6)] transition-all duration-700 ease-in-out">
-                                    <img
-                                        src="image.webp"
-                                        alt="Harsh Upadhyay"
-                                        className="h-full w-full object-cover object-top transition-transform duration-1000 hover:scale-105"
-                                    />
+                            <div className="px-2 pb-2 pt-4">
+                                <p className={`text-[10px] font-semibold tracking-[0.15em] ${isMinimal ? "text-violet-700" : "text-teal-300"}`}>FULL-STACK DEVELOPER</p>
+                                <p className={`mt-1 text-xl font-medium tracking-tight ${isMinimal ? "text-stone-900" : "text-white"}`}>Harsh Upadhyay <span className={`${isMinimal ? "text-violet-700" : "text-violet-300"}`}>↗</span></p>
+                                <div className={`mt-3 flex justify-between border-t pt-3 font-mono text-[9px] tracking-[0.14em] ${isMinimal ? "border-stone-200 text-stone-400" : "border-white/10 text-slate-500"}`}>
+                                    <span>DESIGN · CODE · BUILD</span><span>INDIA · IST</span>
                                 </div>
-                            </ElectricBorder>
+                            </div>
                         </div>
-                    )}
+                        {/* Project cards */}
+                        <a href="#projects" className={`absolute left-[-4px] top-[95px] z-20 w-[156px] rounded-2xl border p-3 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] ${isMinimal ? "border-stone-200 bg-white/95 text-stone-800 shadow-stone-900/10" : "border-white/10 bg-[#111522]/95 text-white shadow-black/30"}`}>
+                            <span className={`block font-mono text-[9px] tracking-[0.12em] ${isMinimal ? "text-stone-400" : "text-slate-500"}`}>01 / PROJECT</span>
+                            <span className="mt-1 block text-sm font-semibold">CSS Arena</span>
+                            <span className={`mt-1 block text-[10px] ${isMinimal ? "text-stone-500" : "text-slate-400"}`}>Explore project ↗</span>
+                        </a>
+                        <a href="#projects" className={`absolute right-[-2px] top-[265px] z-20 w-[145px] rounded-2xl border p-3 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] ${isMinimal ? "border-stone-200 bg-white/95 text-stone-800 shadow-stone-900/10" : "border-white/10 bg-[#111522]/95 text-white shadow-black/30"}`}>
+                            <span className={`block font-mono text-[9px] tracking-[0.12em] ${isMinimal ? "text-stone-400" : "text-slate-500"}`}>02 / PROJECT</span>
+                            <span className="mt-1 block text-sm font-semibold">Ezzstar</span>
+                            <span className={`mt-1 block text-[10px] ${isMinimal ? "text-stone-500" : "text-slate-400"}`}>Explore project ↗</span>
+                        </a>
+                        <a href="#projects" className={`absolute bottom-[1px] right-[20px] z-20 w-[165px] rounded-2xl border p-3 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] ${isMinimal ? "border-violet-200 bg-white/95 text-stone-800 shadow-stone-900/10" : "border-violet-300/20 bg-[#211a32]/95 text-white shadow-violet-950/30"}`}>
+                            <span className={`block font-mono text-[9px] tracking-[0.12em] ${isMinimal ? "text-violet-700" : "text-violet-300"}`}>03 / FEATURED</span>
+                            <span className="mt-1 block text-sm font-semibold">Weblum <span aria-hidden="true">↗</span></span>
+                            <span className={`mt-1 block text-[10px] ${isMinimal ? "text-stone-500" : "text-violet-100/60"}`}>Digital products</span>
+                        </a>
+                    </div>
                 </div>
             </div>
 
