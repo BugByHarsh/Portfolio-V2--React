@@ -43,8 +43,8 @@ export default function Hero() {
                             <div className={`absolute -top-1 right-1 text-[9px] font-mono tracking-[0.16em] ${isMinimal ? "text-emerald-700" : "text-teal-300"}`}>
                                 <span className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full bg-teal-400" /> AVAILABLE
                             </div>
-                            <div className="relative mx-auto w-full max-w-[340px] pb-2">
-                                <div className={`relative z-10 mx-auto w-full max-w-[280px] overflow-hidden rounded-[1.35rem] border p-1.5 shadow-2xl ${isMinimal ? "border-stone-300 bg-white/90 shadow-stone-900/10" : "border-white/15 bg-[#111522]/95 shadow-violet-950/40"}`}>
+                            <div className="relative mx-auto w-full max-w-[300px] pb-2">
+                                <div className={`relative z-10 mx-auto w-full max-w-[230px] overflow-hidden rounded-[1.35rem] border p-1.5 shadow-2xl ${isMinimal ? "border-stone-300 bg-white/90 shadow-stone-900/10" : "border-white/15 bg-[#111522]/95 shadow-violet-950/40"}`}>
                                     <div className={`flex items-center justify-between px-2 py-2 font-mono text-[9px] tracking-[0.16em] ${isMinimal ? "text-stone-400" : "text-slate-500"}`}>
                                         <span>PROFILE / 001</span><span>01 — 03</span>
                                     </div>
@@ -59,10 +59,10 @@ export default function Hero() {
                                     </div>
                                 </div>
                                 {[
-                                    { name: "React", Icon: Atom, tone: "text-sky-500", pos: "left-0 top-[22%]", delay: "0s" },
-                                    { name: "Node.js", Icon: Server, tone: "text-emerald-500", pos: "right-0 top-[39%]", delay: "-1.5s" },
-                                    { name: "MongoDB", Icon: Database, tone: "text-violet-500", pos: "left-0 bottom-[15%]", delay: "-3s" },
-                                    { name: "Electron", Icon: AppWindow, tone: "text-amber-500", pos: "right-0 bottom-[2%]", delay: "-4.5s" },
+                                    { name: "React", Icon: Atom, tone: "text-sky-500", pos: "left-[-10px] top-[22%]", delay: "0s" },
+                                    { name: "Node.js", Icon: Server, tone: "text-emerald-500", pos: "right-[-10px] top-[39%]", delay: "-1.5s" },
+                                    { name: "MongoDB", Icon: Database, tone: "text-violet-500", pos: "left-[-10px] bottom-[15%]", delay: "-3s" },
+                                    { name: "Electron", Icon: AppWindow, tone: "text-amber-500", pos: "right-[-10px] bottom-[2%]", delay: "-4.5s" },
                                 ].map(({ name, Icon, tone, pos, delay }) => (
                                     <div key={name} style={{ animation: "skillFloat 6s ease-in-out infinite", animationDelay: delay }} className={`absolute ${pos} z-20 flex items-center gap-1.5 rounded-xl border px-2 py-2 shadow-xl backdrop-blur-xl ${isMinimal ? "border-stone-200 bg-white/95 text-stone-800 shadow-stone-900/10" : "border-white/10 bg-[#111522]/95 text-white shadow-black/30"}`}>
                                         <Icon size={15} className={tone} />
