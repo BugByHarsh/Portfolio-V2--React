@@ -1,10 +1,25 @@
 import { useTheme } from "../context/ThemeContext";
 import { Github, Linkedin } from "lucide-react";
+import LogoLoop from "./bg/LogoLoop";
 import { Atom, Server, Database, AppWindow } from "lucide-react";
 
 export default function Hero() {
     const { theme } = useTheme();
     const isMinimal = theme === "minimal";
+
+    const logos = [
+        { src: "/logos/javascript.svg", alt: "JavaScript" },
+        { src: "/logos/php.svg", alt: "PHP" },
+        { src: "/logos/python.svg", alt: "Python" },
+        { src: "/logos/react.svg", alt: "React" },
+        { src: "/logos/tailwindcss.svg", alt: "Tailwind CSS" },
+        { src: "/logos/nodedotjs.svg", alt: "Node.js" },
+        { src: "/logos/express.svg", alt: "Express.js" },
+        { src: "/logos/laravel.svg", alt: "Laravel" },
+        { src: "/logos/mongodb.svg", alt: "MongoDB" },
+        { src: "/logos/mysql.svg", alt: "MySQL" },
+        { src: "/logos/git.svg", alt: "Git" },
+    ];
 
     const scrollDown = () => {
         const about = document.getElementById("about");
@@ -194,6 +209,19 @@ export default function Hero() {
                         ))}
                     </div>
                 </div>
+            </div>
+
+            {/* Technology logo strip — restored while keeping the floating skill cards */}
+            <div className={`absolute bottom-0 py-3 sm:py-4 border-t left-0 w-full ${isMinimal
+                ? "bg-black/5 border-black/10"
+                : "bg-white/5 border-white/10"
+                }`}>
+                <LogoLoop
+                    logos={logos}
+                    logoHeight={24}
+                    gap={24}
+                    className={isMinimal ? "[&_img]:brightness-0" : "[&_img]:invert"}
+                />
             </div>
 
             {/* Mouse scroll cue */}
